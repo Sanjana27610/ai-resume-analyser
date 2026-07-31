@@ -1,51 +1,50 @@
 import { useState } from "react";
-import axios from "axios";
 
 function ResumeUpload() {
   const [file, setFile] = useState(null);
 
-  const handleAnalyze = async () => {
+  const handleAnalyze = () => {
     if (!file) {
       alert("Please select a PDF resume first!");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("resume", file);
-
-    try {
-      const res = await axios.post(
-        "http://localhost:5000/upload",
-        formData
-      );
-
-      alert("Resume uploaded successfully!");
-      console.log(res.data);
-    } catch (error) {
-      console.error(error);
-      alert("Upload failed!");
-    }
+    alert(`Analyzing ${file.name}...`);
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "40px" }}>
-      <h2>Upload Your Resume</h2>
+    <div className="max-w-3xl mx-auto mt-12 bg-white shadow-2xl rounded-2xl p-10">
+      <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
+        📄 Upload Your Resume
+      </h2>
 
-      <input
-        type="file"
-        accept=".pdf"
-        onChange={(e) => setFile(e.target.files[0])}
-      />
+      <div className="border-2 border-dashed border-blue-500 rounded-xl p-10 text-center">
+        <input
+          type="file"
+          accept=".pdf"
+          onChange={(e) => setFile(e.target.files[0])}
+          className="mb-5"
+        />
 
-      <br /><br />
+        {file ? (
+          <p className="text-green-600 font-semibold">
+            ✅ {file.name}
+          </p>
+        ) : (
+          <p className="text-gray-500">
+            Drag & Drop your PDF or choose a file
+          </p>
+        )}
+      </div>
 
-      <button onClick={handleAnalyze}>
-        Analyze Resume
-      </button>
-
-      <br /><br />
-
-      {file && <p>Selected File: {file.name}</p>}
+      <div className="text-center mt-8">
+        <button
+          onClick={handleAnalyze}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl text-lg font-semibold transition"
+        >
+          🚀 Analyze Resume
+        </button>
+      </div>
     </div>
   );
 }
